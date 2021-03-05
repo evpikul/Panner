@@ -8,33 +8,117 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include <math.h>
+
 
 //==============================================================================
-PannerAudioProcessor::PannerAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
-#endif
+JuceGainAudioProcessor::JuceGainAudioProcessor()
+{
+    uGain               = DEFAULT_U_GAIN;
+    aGain               = DEFAULT_A_GAIN;
+    aPan    = uPan      = DEFAULT_PAN;
+
+    // Do not use decibels in multiplier! Only uV (unit voltage)
+    leftPanGain     = aGain * cosf(aPan * M_PI_2) * THREE_DB;
+    rightPanGain    = aGain * sinf(aPan * M_PI_2) * THREE_DB;
+}
+
+JuceGainAudioProcessor::~JuceGainAudioProcessor()
 {
 }
 
-PannerAudioProcessor::~PannerAudioProcessor()
-{
-}
-
 //==============================================================================
-const juce::String PannerAudioProcessor::getName() const
+const String JuceGainAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool PannerAudioProcessor::acceptsMidi() const
+int JuceGainAudioProcessor::getNumParameters()
+{
+    // Return total number of parameters
+    return totalNumParams;
+}
+
+float JuceGainAudioProcessor::getParameter (int index)
+{
+    switch (index) {
+        case gainParam:       return uGain;
+        case panParam:          return uPan;
+        default:                return 0.f;
+    }
+}
+
+void JuceGainAudioProcessor::setParameter (int index, float newValue)
+{
+    // newValue must always be from 0.f - 1.f
+    
+    switch (index) {
+        case gainParam:     // GUI Range: [-96, +10], in decibels
+            uGain = newValue;
+            aGain = powf(10.f, (106.f * uGain - 96.f) / 20.f);
+            break;
+        
+        case panParam:      // GUI Range: [-50, +50]
+            uPan = newValue;
+            aPan = uPan;    // L = 0., R = 1.
+            break;
+            
+        default:
+            break;
+    }
+    
+    leftPanGain     = aGain * cosf(aPan * M_PI_2) * THREE_DB;
+    rightPanGain    = aGain * sinf(aPan * M_PI_2) * THREE_DB;
+}
+
+float JuceGainAudioProcessor::getParameterDefaultValue(int index) {
+    switch (index) {
+        case gainParam:     return DEFAULT_U_GAIN;
+        case panParam:      return DEFAULT_PAN;
+        default:            return 0.f;
+    }
+}
+
+const String JuceGainAudioProcessor::getParameterName (int index)
+{
+    switch (index) {
+        case gainParam:     return "Gain";
+        case panParam:      return "Pan";
+        default:            return std::string();
+    }
+}
+
+const String JuceGainAudioProcessor::getParameterText (int index)
+{
+    // Reconvert 0.-1.f values to UI ranges for host to recognize
+    switch (index) {
+        case gainParam:     return String(106.f * uGain - 96.f, 2);
+        case panParam:      return String((int)(100.f * uPan - 50.f));
+        default:            return String(getParameter(index), 2);
+    }
+}
+
+const String JuceGainAudioProcessor::getInputChannelName (int channelIndex) const
+{
+    return String (channelIndex + 1);
+}
+
+const String JuceGainAudioProcessor::getOutputChannelName (int channelIndex) const
+{
+    return String (channelIndex + 1);
+}
+
+bool JuceGainAudioProcessor::isInputChannelStereoPair (int index) const
+{
+    return true;
+}
+
+bool JuceGainAudioProcessor::isOutputChannelStereoPair (int index) const
+{
+    return true;
+}
+
+bool JuceGainAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -43,7 +127,7 @@ bool PannerAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool PannerAudioProcessor::producesMidi() const
+bool JuceGainAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -52,132 +136,99 @@ bool PannerAudioProcessor::producesMidi() const
    #endif
 }
 
-bool PannerAudioProcessor::isMidiEffect() const
+bool JuceGainAudioProcessor::silenceInProducesSilenceOut() const
 {
-   #if JucePlugin_IsMidiEffect
-    return true;
-   #else
     return false;
-   #endif
 }
 
-double PannerAudioProcessor::getTailLengthSeconds() const
+double JuceGainAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int PannerAudioProcessor::getNumPrograms()
-{
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
-}
-
-int PannerAudioProcessor::getCurrentProgram()
+int JuceGainAudioProcessor::getNumPrograms()
 {
     return 0;
 }
 
-void PannerAudioProcessor::setCurrentProgram (int index)
+int JuceGainAudioProcessor::getCurrentProgram()
+{
+    return 0;
+}
+
+void JuceGainAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String PannerAudioProcessor::getProgramName (int index)
+const String JuceGainAudioProcessor::getProgramName (int index)
 {
-    return {};
+    return std::string();
 }
 
-void PannerAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void JuceGainAudioProcessor::changeProgramName (int index, const String& newName)
 {
 }
 
 //==============================================================================
-void PannerAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void JuceGainAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
 
-void PannerAudioProcessor::releaseResources()
+void JuceGainAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
-#ifndef JucePlugin_PreferredChannelConfigurations
-bool PannerAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-  #if JucePlugin_IsMidiEffect
-    juce::ignoreUnused (layouts);
-    return true;
-  #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    // Some plugin hosts, such as certain GarageBand versions, will only
-    // load plugins that support stereo bus layouts.
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
-        return false;
-
-    // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-        return false;
-   #endif
-
-    return true;
-  #endif
-}
-#endif
-
-void PannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
-{
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
-
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
-    }
+        float* leftChannel  = buffer.getWritePointer(0);
+        float* rightChannel = buffer.getWritePointer(1);
+        
+        for (int i = 0; i < buffer.getNumSamples(); i++) {
+            /* Constant Power Pan Law (-3db center, thus THREE_DB used to equal input at center):
+                leftChannel[i]  = leftChannel[i]  * cosf(pan * M_PI_2) * THREE_DB;
+                rightChannel[i] = rightChannel[i] * sinf(pan * M_PI_2) * THREE_DB;
+             */
+            leftChannel[i]  *= leftPanGain;
+            rightChannel[i] *= rightPanGain;
+        }
+        
+        // In case we have more outputs than inputs, we'll clear any output
+        // channels that didn't contain input data, (because these aren't
+        // guaranteed to be empty - they may contain garbage).
+        for (int i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i)
+        {
+            buffer.clear (i, 0, buffer.getNumSamples());
+        }
 }
 
 //==============================================================================
-bool PannerAudioProcessor::hasEditor() const
+bool JuceGainAudioProcessor::hasEditor() const
 {
+    // Temporarily false until work on GUI begins
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* PannerAudioProcessor::createEditor()
+AudioProcessorEditor* JuceGainAudioProcessor::createEditor()
 {
-    return new PannerAudioProcessorEditor (*this);
+    return new JuceGainAudioProcessorEditor (*this);
 }
 
+
 //==============================================================================
-void PannerAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void JuceGainAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void PannerAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void JuceGainAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -185,7 +236,7 @@ void PannerAudioProcessor::setStateInformation (const void* data, int sizeInByte
 
 //==============================================================================
 // This creates new instances of the plugin..
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new PannerAudioProcessor();
+    return new JuceGainAudioProcessor();
 }

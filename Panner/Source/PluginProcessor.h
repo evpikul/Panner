@@ -8,55 +8,95 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "Panning.h"
+#ifndef PLUGINPROCESSOR_H_INCLUDED
+#define PLUGINPROCESSOR_H_INCLUDED
+
+#include "../JuceLibraryCode/JuceHeader.h"
+
 
 //==============================================================================
 /**
 */
-class PannerAudioProcessor  : public juce::AudioProcessor
+class JuceGainAudioProcessor  : public AudioProcessor
 {
 public:
     //==============================================================================
-    PannerAudioProcessor();
-    ~PannerAudioProcessor() override;
+    JuceGainAudioProcessor();
+    ~JuceGainAudioProcessor();
 
     //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
-    void releaseResources() override;
+    void prepareToPlay (double sampleRate, int samplesPerBlock);
+    void releaseResources();
 
-   #ifndef JucePlugin_PreferredChannelConfigurations
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
-
-    void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
+    void processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
 
     //==============================================================================
-    juce::AudioProcessorEditor* createEditor() override;
-    bool hasEditor() const override;
+    AudioProcessorEditor* createEditor();
+    bool hasEditor() const;
 
     //==============================================================================
-    const juce::String getName() const override;
+    const String getName() const;
 
-    bool acceptsMidi() const override;
-    bool producesMidi() const override;
-    bool isMidiEffect() const override;
-    double getTailLengthSeconds() const override;
+    int getNumParameters();
 
-    //==============================================================================
-    int getNumPrograms() override;
-    int getCurrentProgram() override;
-    void setCurrentProgram (int index) override;
-    const juce::String getProgramName (int index) override;
-    void changeProgramName (int index, const juce::String& newName) override;
-
-    //==============================================================================
-    void getStateInformation (juce::MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
-
-private:
-    Panning myPanning; 
+    float getParameter (int index);
+    void setParameter (int index, float newValue);
+    float getParameterDefaultValue(int index);
     
+    const String getParameterName (int index);
+    const String getParameterText (int index);
+
+    const String getInputChannelName (int channelIndex) const;
+    const String getOutputChannelName (int channelIndex) const;
+    bool isInputChannelStereoPair (int index) const;
+    bool isOutputChannelStereoPair (int index) const;
+
+    bool acceptsMidi() const;
+    bool producesMidi() const;
+    bool silenceInProducesSilenceOut() const;
+    double getTailLengthSeconds() const;
+
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PannerAudioProcessor)
+    int getNumPrograms();
+    int getCurrentProgram();
+    void setCurrentProgram (int index);
+    const String getProgramName (int index);
+    void changeProgramName (int index, const String& newName);
+
+    //==============================================================================
+    void getStateInformation (MemoryBlock& destData);
+    void setStateInformation (const void* data, int sizeInBytes);
+
+    //==============================================================================
+    float convType = 1.f;
+    
+    // Parameter indices
+    enum Parameters
+    {
+        gainParam,
+        panParam,
+        totalNumParams
+    };
+    
+    // User parameters
+    float uGain, uPan;          // Must be 0.-1.
+    
+private:
+    //==============================================================================
+    
+    // Default values
+    const float DEFAULT_U_GAIN  = 96.f/106.f;
+    const float DEFAULT_A_GAIN  = 1.f;
+    const float THREE_DB        = 1.41254f;
+    const float DEFAULT_PAN     = 0.5f;
+
+    // Algorithm parameters
+    float aGain, aPan;
+
+    // In-loop values
+    float leftPanGain, rightPanGain;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JuceGainAudioProcessor)
 };
+
+#endif  // PLUGINPROCESSOR_H_INCLUDED
