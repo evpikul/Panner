@@ -16,19 +16,19 @@
 JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
-    setSize (800, 400);
+    setSize (700, 400);
     
     //Gain
     gainDbSlider.addListener (this);
     gainDbSlider.setTooltip (TRANS("Adjusts output volume"));
-    gainDbSlider.setBounds(20,100,200,200);
+    gainDbSlider.setBounds(20,100,250,250);
     gainDbSlider.setRange (-96, 10, 0.01);
     gainDbSlider.setSliderStyle (Slider::LinearVertical);
     gainDbSlider.setTextBoxStyle (Slider::TextBoxBelow, false, 60, 20);
-    gainDbSlider.setColour (Slider::backgroundColourId, Colour (0x00000000));
-    gainDbSlider.setColour (Slider::thumbColourId, Colours::grey);
-    gainDbSlider.setColour (Slider::trackColourId, Colour (0x7fffffff));
-    gainDbSlider.setColour (Slider::rotarySliderOutlineColourId, Colour (0x00000000));
+    gainDbSlider.setColour (Slider::backgroundColourId, Colours::cornsilk);
+    gainDbSlider.setColour (Slider::thumbColourId, Colours::greenyellow);
+    gainDbSlider.setColour (Slider::trackColourId, Colours::peru);
+    gainDbSlider.setColour (Slider::rotarySliderOutlineColourId, Colours::peru);
     gainDbSlider.setColour (Slider::textBoxTextColourId, Colours::white);
     gainDbSlider.setColour (Slider::textBoxBackgroundColourId, Colour (0xff181818));
     gainDbSlider.setColour (Slider::textBoxHighlightColourId, Colours::white);
@@ -36,15 +36,17 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     addAndMakeVisible(gainDbSlider);
     gainLabel.setText("GAIN", dontSendNotification);
     gainLabel.attachToComponent(&gainDbSlider, false);
+    
 
     //Panning knobs
     panSlider.addListener (this);
     panSlider.setTooltip (TRANS("Adjusts signal panning"));
-    panSlider.setBounds(550,100,200,200);
+    panSlider.setBounds(500,100,200,200);
     panSlider.setRange (-50, 50, 1);
     panSlider.setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
     panSlider.setTextBoxStyle (Slider::TextBoxBelow, false, 60, 20);
-    panSlider.setColour (Slider::rotarySliderFillColourId, Colours::grey);
+    panSlider.setColour (Slider::rotarySliderFillColourId, Colours::greenyellow);
+    panSlider.setColour (Slider::thumbColourId, Colours::darkorange);
     panSlider.setColour (Slider::rotarySliderOutlineColourId, Colour (0x00000000));
     panSlider.setColour (Slider::textBoxTextColourId, Colours::white);
     panSlider.setColour (Slider::textBoxBackgroundColourId, Colour (0xff181818));
@@ -57,36 +59,34 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     //ComboBox
     convSelector.addListener(this);
     convSelector.setTooltip (TRANS("Convolution"));
-    convSelector.setBounds(450,10,50,50);
+    convSelector.setBounds(500,5,25,25);
     //convSelector->setTextBoxStyle (ComboBox::TextBoxBelow, false, 60, 20);
-    convSelector.addItem("Type1",1);
-    convSelector.addItem("Type2",2);
-    convSelector.addItem("Type3", 3);
-    convSelector.addItem("Type4", 4);
-    convSelector.setSelectedId(2);
+    convSelector.addItem("Cathedral",1);
+    convSelector.addItem("Bathroom",2);
+    convSelector.addItem("Anechoic Chamber", 3);
+    convSelector.addItem("Plate", 4);
+    convSelector.addItem("None", 5);
+    convSelector.setSelectedId(1);
     convSelector.setBounds(275, 100, 120, 40);
     addAndMakeVisible(convSelector);
     convLabel.setText("CONVOLUTION", dontSendNotification);
     convLabel.attachToComponent(&convSelector, false);
     
-
-
-//    
     
 //    muteONButton.addListener(this);
 //    muteONButton.setBounds(275, 175, 100, 40);
 //    muteONButton.setButtonText("Sync'd");
-//    muteONButton.setToggleState(audioProcessor.tempoSyncd, dontSendNotification);
+//    //muteONButton.setToggleState(audioProcessor.muteON, dontSendNotification);
 //    muteONButton.setRadioGroupId(1); // links with "notTempoSyncButton"
-//    addAndMakeVisible(tempoSyncButton);
-//    
+//    addAndMakeVisible(muteONButton);
+//
 //    muteOFFButton.addListener(this);
 //    muteOFFButton.setBounds(100, 175, 100, 40);
 //    muteOFFButton.setButtonText("Sync Off");
-//    muteOFFButton.setToggleState(!audioProcessor.tempoSyncd, dontSendNotification);
+//   // muteOFFButton.setToggleState(!audioProcessor.muteOFF, dontSendNotification);
 //    muteOFFButton.setRadioGroupId(1);
-//    addAndMakeVisible(notTempoSyncButton);
-//    
+//    addAndMakeVisible(muteOFFButton);
+
 
     //[UserPreSize]
     gainDbSlider.setTextValueSuffix("db");

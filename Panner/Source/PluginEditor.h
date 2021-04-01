@@ -29,11 +29,12 @@ using namespace std;
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
+
 class JuceGainAudioProcessorEditor  : public AudioProcessorEditor,
 public Timer,
 public juce::Slider::Listener,
                                 public juce::ComboBox::Listener
-                               //public juce::Button::Listener
+                               // public juce::Button::Listener
 
 {
 public:
@@ -50,7 +51,7 @@ public:
     void resized() override;
     void sliderValueChanged (Slider * sliderThatWasMoved) override;
     void comboBoxChanged(ComboBox * comboBox) override;
-    //void buttonClicked(Button * button) override;
+    //void buttonClicked(ToggleButton * button) override;
 
 
 
@@ -80,8 +81,8 @@ private:
     Label panLabel;
     Label convLabel;
     
-    //ScopedPointer<ToggleButton> muteONButton;
-   //ScopedPointer<ToggleButton> muteOFFButton;
+   // ToggleButton muteONButton;
+   // ToggleButton muteOFFButton;
 
 
     //==============================================================================

@@ -68,7 +68,7 @@ public:
     void setStateInformation (const void* data, int sizeInBytes);
 
     //==============================================================================
-    float convType = 1.f;
+    int convType = 1;
     
     // Parameter indices
     enum Parameters

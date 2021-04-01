@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="tFMb6P" name="Panner" projectType="audioplug" useAppConfig="0"
               displaySplashScreen="1" jucerFormatVersion="1" addUsingNamespaceToJuceHeader="1"
-              pluginFormats="buildStandalone" pluginAUMainType="'aufx'">
+              pluginFormats="buildAU,buildStandalone" pluginAUMainType="'aufx'">
   <MAINGROUP id="NUq2ZM" name="Panner">
     <GROUP id="{82D278E5-9C00-CDAC-D65B-CD3109D9AC0D}" name="Source">
       <FILE id="UuN9rj" name="PluginProcessor.cpp" compile="1" resource="0"
@@ -16,9 +16,9 @@
             file="../../../JUCETestPlugins/Panner/MyPanner/Source/PluginLookAndFeel.cpp"/>
       <FILE id="jXWVyF" name="PluginLookAndFeel.h" compile="0" resource="0"
             file="../../../JUCETestPlugins/Panner/MyPanner/Source/PluginLookAndFeel.h"/>
+      <FILE id="ILYMDf" name="Panning.cpp" compile="1" resource="0" file="Source/Panning.cpp"/>
+      <FILE id="fCSfVb" name="Panning.h" compile="0" resource="0" file="Source/Panning.h"/>
     </GROUP>
-    <FILE id="ILYMDf" name="Panning.cpp" compile="1" resource="0" file="Source/Panning.cpp"/>
-    <FILE id="fCSfVb" name="Panning.h" compile="0" resource="0" file="Source/Panning.h"/>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>

@@ -216,9 +216,8 @@ bool JuceGainAudioProcessor::hasEditor() const
 
 AudioProcessorEditor* JuceGainAudioProcessor::createEditor()
 {
-    return new JuceGainAudioProcessorEditor (*this);
+   return new JuceGainAudioProcessorEditor (*this);
 }
-
 
 //==============================================================================
 void JuceGainAudioProcessor::getStateInformation (MemoryBlock& destData)
