@@ -12,7 +12,7 @@
 #define PLUGINPROCESSOR_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
+#include "Panning.h"
 
 //==============================================================================
 /**
@@ -25,6 +25,22 @@ public:
     ~JuceGainAudioProcessor();
 
     //==============================================================================
+
+    const String getName() const;
+    int getNumParameters();
+
+    float getParameter (int index);
+    void setParameter (int index, float newValue);
+    float getParameterDefaultValue(int index);
+
+    const String getParameterName (int index);
+    const String getParameterText (int index);
+
+    const String getInputChannelName (int channelIndex) const;
+    const String getOutputChannelName (int channelIndex) const;
+    bool isInputChannelStereoPair (int index) const;
+    bool isOutputChannelStereoPair (int index) const;
+    
     void prepareToPlay (double sampleRate, int samplesPerBlock);
     void releaseResources();
 
@@ -35,21 +51,7 @@ public:
     bool hasEditor() const;
 
     //==============================================================================
-    const String getName() const;
-
-    int getNumParameters();
-
-    float getParameter (int index);
-    void setParameter (int index, float newValue);
-    float getParameterDefaultValue(int index);
-    
-    const String getParameterName (int index);
-    const String getParameterText (int index);
-
-    const String getInputChannelName (int channelIndex) const;
-    const String getOutputChannelName (int channelIndex) const;
-    bool isInputChannelStereoPair (int index) const;
-    bool isOutputChannelStereoPair (int index) const;
+    //const String getName() const;
 
     bool acceptsMidi() const;
     bool producesMidi() const;
@@ -84,14 +86,14 @@ public:
 private:
     //==============================================================================
     
-    // Default values
-    const float DEFAULT_U_GAIN  = 96.f/106.f;
-    const float DEFAULT_A_GAIN  = 1.f;
-    const float THREE_DB        = 1.41254f;
-    const float DEFAULT_PAN     = 0.5f;
-
-    // Algorithm parameters
-    float aGain, aPan;
+//    // Default values
+//    const float DEFAULT_U_GAIN  = 96.f/106.f;
+//    const float DEFAULT_A_GAIN  = 1.f;
+//    const float THREE_DB        = 1.41254f;
+//    const float DEFAULT_PAN     = 0.5f;
+//
+//    // Algorithm parameters
+//    float aGain, aPan;
 
     // In-loop values
     float leftPanGain, rightPanGain;

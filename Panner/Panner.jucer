@@ -18,6 +18,8 @@
             file="../../../JUCETestPlugins/Panner/MyPanner/Source/PluginLookAndFeel.h"/>
       <FILE id="ILYMDf" name="Panning.cpp" compile="1" resource="0" file="Source/Panning.cpp"/>
       <FILE id="fCSfVb" name="Panning.h" compile="0" resource="0" file="Source/Panning.h"/>
+      <FILE id="McxmD3" name="Convolution.cpp" compile="1" resource="0" file="Source/Convolution.cpp"/>
+      <FILE id="GRLmQw" name="Convolution.h" compile="0" resource="0" file="Source/Convolution.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

@@ -89,6 +89,10 @@
 			isa = PBXBuildFile;
 			fileRef = 9B6A980FEDC687813196BEF6;
 		};
+		ECE7C04CDD3C2E8A086F5372 = {
+			isa = PBXBuildFile;
+			fileRef = 7B1988AC3B714251B5235A15;
+		};
 		487254BE53E40F6C69040723 = {
 			isa = PBXBuildFile;
 			fileRef = D7604672881AD9DD2F44ACBA;
@@ -290,6 +294,13 @@
 			path = "../../JuceLibraryCode/include_juce_core.mm";
 			sourceTree = "SOURCE_ROOT";
 		};
+		4EC7839C7FA7B8B624C822FE = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = Convolution.h;
+			path = ../../Source/Convolution.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		57C2BB764818D79E02592FE1 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -309,6 +320,13 @@
 			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = "include_juce_graphics.mm";
 			path = "../../JuceLibraryCode/include_juce_graphics.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		7B1988AC3B714251B5235A15 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = Convolution.cpp;
+			path = ../../Source/Convolution.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
 		7FB6B3FA492505892302C0F0 = {
@@ -367,11 +385,18 @@
 			path = "~/JUCE/modules/juce_gui_basics";
 			sourceTree = "<absolute>";
 		};
-		A7E9E1651FB3C854D1B5ABC9 = {
+		A481A4314C869817F40AE862 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
-			name = "juce_core";
-			path = "~/JUCE/modules/juce_core";
+			name = "juce_audio_formats";
+			path = "~/JUCE/modules/juce_audio_formats";
+			sourceTree = "<absolute>";
+		};
+		AA54E2FEF2117C8AC154180B = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_devices";
+			path = "~/JUCE/modules/juce_audio_devices";
 			sourceTree = "<absolute>";
 		};
 		D195FD604B431E3420F1D945 = {
@@ -395,18 +420,11 @@
 			path = libPanner.a;
 			sourceTree = "BUILT_PRODUCTS_DIR";
 		};
-		A481A4314C869817F40AE862 = {
+		A7E9E1651FB3C854D1B5ABC9 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
-			name = "juce_audio_formats";
-			path = "~/JUCE/modules/juce_audio_formats";
-			sourceTree = "<absolute>";
-		};
-		AA54E2FEF2117C8AC154180B = {
-			isa = PBXFileReference;
-			lastKnownFileType = file;
-			name = "juce_audio_devices";
-			path = "~/JUCE/modules/juce_audio_devices";
+			name = "juce_core";
+			path = "~/JUCE/modules/juce_core";
 			sourceTree = "<absolute>";
 		};
 		AD566DCB5382CD2D9FF82BF1 = {
@@ -574,6 +592,8 @@
 				3AE95DE9C5E55D48AB1B8289,
 				9B6A980FEDC687813196BEF6,
 				8ACBBE6642C5C9DDA3C47C5A,
+				7B1988AC3B714251B5235A15,
+				4EC7839C7FA7B8B624C822FE,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1675,6 +1695,7 @@
 				E95EB36EB5883F83D0A907DA,
 				A756AF1C4BF68D1CAE5F3B17,
 				A59EFE0F830460FD2F360B83,
+				ECE7C04CDD3C2E8A086F5372,
 				487254BE53E40F6C69040723,
 				7250332D4ABB0E814B09915C,
 				6D27423A61538254A3BAB2E1,
