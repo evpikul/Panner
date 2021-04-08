@@ -113,23 +113,49 @@ void JuceGainAudioProcessor::releaseResources()
 
 void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-  
-        float* leftChannel  = buffer.getWritePointer(0);
-        float* rightChannel = buffer.getWritePointer(1);
-        
-        for (int i = 0; i < buffer.getNumSamples(); i++) {
-            
-            leftChannel[i]  = Panning.setParameter(x,channel);
-            rightChannel[i] = Panning.setParameter(x,channel);
-        }
-        
-      
-        for (int i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i)
+    juce::ScopedNoDenormals noDenormals;
+    auto totalNumInputChannels  = getTotalNumInputChannels();
+    auto totalNumOutputChannels = getTotalNumOutputChannels();
+
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        buffer.clear (i, 0, buffer.getNumSamples());
+
+    if (muteOn){
+        for (int channel = 0; channel < totalNumInputChannels; ++channel)
         {
-           
-            
-            buffer.clear (i, 0, buffer.getNumSamples());
+            for (int n = 0; n < buffer.getNumSamples() ; n++){
+                buffer.getWritePointer(channel)[n] = 0.f;
+            }
         }
+    }
+    else{
+        myPanning.setPanVal(panVal);
+        
+        for (int channel = 0; channel < totalNumInputChannels; ++channel)
+        {
+            for (int n = 0; n < buffer.getNumSamples() ; n++){
+                float x = buffer.getReadPointer(channel)[n];
+                float y = myPanning.processSample(x,channel);
+                
+                
+                //x = x * gain;
+                // Distortion
+                //x = hardClip(x);
+//                x = myDistortion.processSample(x);
+//
+//                x = myPanning.processSample(x,channel);
+                
+                
+                // Equalizer
+                // Reverb
+                
+                // Output Gain
+                buffer.getWritePointer(channel)[n] = y; // -12 dB
+            }
+        }
+    }
+    
+    
 }
 
 //==============================================================================

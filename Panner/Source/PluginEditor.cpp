@@ -39,22 +39,22 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     
 
     //Panning knobs
-    panSlider.addListener (this);
-    panSlider.setTooltip (TRANS("Adjusts signal panning"));
-    panSlider.setBounds(500,100,200,200);
-    panSlider.setRange (-50, 50, 1);
-    panSlider.setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
-    panSlider.setTextBoxStyle (Slider::TextBoxBelow, false, 60, 20);
-    panSlider.setColour (Slider::rotarySliderFillColourId, Colours::greenyellow);
-    panSlider.setColour (Slider::thumbColourId, Colours::darkorange);
-    panSlider.setColour (Slider::rotarySliderOutlineColourId, Colour (0x00000000));
-    panSlider.setColour (Slider::textBoxTextColourId, Colours::white);
-    panSlider.setColour (Slider::textBoxBackgroundColourId, Colour (0xff181818));
-    panSlider.setColour (Slider::textBoxHighlightColourId, Colours::white);
-    panSlider.setColour (Slider::textBoxOutlineColourId, Colour (0x10808080));
-    addAndMakeVisible(panSlider);
+    panKnob.addListener (this);
+    panKnob.setTooltip (TRANS("Adjusts signal panning"));
+    panKnob.setBounds(500,100,200,200);
+    panKnob.setRange (-50, 50, 1);
+    panKnob.setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
+    panKnob.setTextBoxStyle (Slider::TextBoxBelow, false, 60, 20);
+    panKnob.setColour (Slider::rotarySliderFillColourId, Colours::greenyellow);
+    panKnob.setColour (Slider::thumbColourId, Colours::darkorange);
+    panKnob.setColour (Slider::rotarySliderOutlineColourId, Colour (0x00000000));
+    panKnob.setColour (Slider::textBoxTextColourId, Colours::white);
+    panKnob.setColour (Slider::textBoxBackgroundColourId, Colour (0xff181818));
+    panKnob.setColour (Slider::textBoxHighlightColourId, Colours::white);
+    panKnob.setColour (Slider::textBoxOutlineColourId, Colour (0x10808080));
+    addAndMakeVisible(panKnob);
     panLabel.setText("PAN", dontSendNotification);
-    panLabel.attachToComponent(&panSlider, false);
+    panLabel.attachToComponent(&panKnob, false);
     
     //ComboBox
     convSelector.addListener(this);
@@ -73,12 +73,12 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     convLabel.attachToComponent(&convSelector, false);
     
     
-//    muteONButton.addListener(this);
-//    muteONButton.setBounds(275, 175, 100, 40);
-//    muteONButton.setButtonText("Sync'd");
-//    //muteONButton.setToggleState(audioProcessor.muteON, dontSendNotification);
-//    muteONButton.setRadioGroupId(1); // links with "notTempoSyncButton"
-//    addAndMakeVisible(muteONButton);
+    muteButton.addListener(this);
+    muteButton.setBounds(275, 175, 100, 40);
+    muteButton.setButtonText("Sync'd");
+    //muteONButton.setToggleState(audioProcessor.muteON, dontSendNotification);
+    muteButton.setRadioGroupId(1); // links with "notTempoSyncButton"
+    addAndMakeVisible(muteButton);
 //
 //    muteOFFButton.addListener(this);
 //    muteOFFButton.setBounds(100, 175, 100, 40);
@@ -92,14 +92,13 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     gainDbSlider.setTextValueSuffix("db");
 
     gainDbSlider.setDoubleClickReturnValue(true, 0);
-    panSlider.setDoubleClickReturnValue(true, 0);
+    panKnob.setDoubleClickReturnValue(true, 0);
     
     //LookAndFeel::setDefaultLookAndFeel(&pluginLookAndFeel); // Custom Styling
     //[/UserPreSize]
 
-
     //[Constructor] You can add your own custom stuff here..
-    startTimer(50);
+    //startTimer(50);
     //[/Constructor]
 }
 
@@ -144,32 +143,25 @@ void JuceGainAudioProcessorEditor::resized()
     //[/UserResized]
 }
 
-void JuceGainAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved)
-{
-    //[UsersliderValueChanged_Pre]
-    //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == &gainDbSlider)
-    {
-        //[UserSliderCode_gainDbSlider] -- add your slider handling code here..
-        processor.setParameterNotifyingHost(
-            JuceGainAudioProcessor::Parameters::gainParam,
-            (float) (sliderThatWasMoved->getValue() + 96.f) / 106.f // map to 0.-1.f (uGain)
-        );
-        //[/UserSliderCode_gainDbSlider]
-    }
-    else if (sliderThatWasMoved == &panSlider)
-    {
-        //[UserSliderCode_panSlider] -- add your slider handling code here..
-        processor.setParameterNotifyingHost(
-            JuceGainAudioProcessor::Parameters::panParam,
-            (float) (sliderThatWasMoved->getValue() + 50.f) / 100.f // map to 0.-1.f
-        );
-        //[/UserSliderCode_panSlider]
-    }
 
-    //[UsersliderValueChanged_Post]
-    //[/UsersliderValueChanged_Post]
+void JuceGainAudioProcessorEditor::sliderValueChanged(Slider *slider){
+    
+    if (slider == &gainDbSlider){
+        *processor.gain = gainDbSlider.getValue(); //assign to value of the pointer
+    }
+    if (slider == &panKnob){
+        *processor.pan = panKnob.getValue(); //assign to value of the pointer
+    }
+    
+}
+
+void JuceGainAudioProcessorEditor::buttonClicked(Button * button){
+    
+    if (button == &muteButton){
+        processor.muteOn = !audioProcessor.muteOn;
+    }
+    
 }
 
 void JuceGainAudioProcessorEditor::comboBoxChanged(ComboBox* comboBox){
@@ -196,20 +188,20 @@ void JuceGainAudioProcessorEditor::comboBoxChanged(ComboBox* comboBox){
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void JuceGainAudioProcessorEditor::timerCallback() {
-    // Timer conflicts cause UI stuttering, this is due to the values not being mapped back
-    JuceGainAudioProcessor& ourProcessor = getProcessor();
-
-    gainDbSlider.setValue(
-        (106.f * ourProcessor.uGain - 96.f),
-        dontSendNotification
-    );
-
-    panSlider.setValue(
-        (100.f * ourProcessor.uPan - 50.f),
-        dontSendNotification
-    );
-}
+//void JuceGainAudioProcessorEditor::timerCallback() {
+//    // Timer conflicts cause UI stuttering, this is due to the values not being mapped back
+//    JuceGainAudioProcessor& ourProcessor = getProcessor();
+//
+//    gainDbSlider.setValue(
+//        (106.f * ourProcessor.uGain - 96.f),
+//        dontSendNotification
+//    );
+//
+//    panSlider.setValue(
+//        (100.f * ourProcessor.uPan - 50.f),
+//        dontSendNotification
+//    );
+//}
 //[/MiscUserCode]
 
 

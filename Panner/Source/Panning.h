@@ -4,48 +4,27 @@
 
   ==============================================================================
 */
-
 #pragma once
+#include <JuceHeader.h>
 
-#include "../JuceLibraryCode/JuceHeader.h"
-
-
-//==============================================================================
-/**
-*/
-class Panning{
-    
-public:
-   
-    Panning();
-    ~Panning();
-    
-   
-
+class Panning {
   
+public:
     
-    // Parameter indices
-    enum Parameters
-    {
-        gainParam,
-        panParam,
-        totalNumParams
-    };
+    float processSample(float x, int channel);
+    
+    void setPanVal(float newPanVal);
+    
+    //void setFs(float newFs);
 
-    // User parameters
-    float uGain, uPan;          // Must be 0.-1.
-    
 private:
-    // Default values
-    const float DEFAULT_U_GAIN  = 96.f/106.f;
-    const float DEFAULT_A_GAIN  = 1.f;
+    float panVal = 0.f;
+    float Fs = 48000.f;
+    
     const float THREE_DB        = 1.41254f;
-    const float DEFAULT_PAN     = 0.5f;
 
-    // Algorithm parameters
-    float aGain, aPan;
-
-    // In-loop values
-    float leftPanGain, rightPanGain;
+    
+    float x[2] = {0.f,0.f}; //initialize in and out
+    float y[2] = {0.f,0.f};
     
 };

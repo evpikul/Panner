@@ -72,16 +72,11 @@ public:
     //==============================================================================
     int convType = 1;
     
-    // Parameter indices
-    enum Parameters
-    {
-        gainParam,
-        panParam,
-        totalNumParams
-    };
-    
-    // User parameters
-    float uGain, uPan;          // Must be 0.-1.
+    float panVal = 0.f;
+    AudioParameterFloat * pan;
+    //float gain = 1.f;
+    AudioParameterFloat * gain;
+    bool  muteOn = false;
     
 private:
     //==============================================================================
@@ -96,7 +91,9 @@ private:
 //    float aGain, aPan;
 
     // In-loop values
-    float leftPanGain, rightPanGain;
+    //float leftPanGain, rightPanGain;
+    
+    Panning myPanning;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JuceGainAudioProcessor)
 };

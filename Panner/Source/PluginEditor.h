@@ -31,11 +31,10 @@ using namespace std;
 */
 
 class JuceGainAudioProcessorEditor  : public AudioProcessorEditor,
-public Timer,
-public juce::Slider::Listener,
-                                public juce::ComboBox::Listener
-                               // public juce::Button::Listener
-
+                                    public juce::Slider::Listener,
+                                    public juce::ComboBox::Listener,
+                                    public juce::Button::Listener
+                                    //public Timer,
 {
 public:
     //==============================================================================
@@ -44,12 +43,12 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void timerCallback() override;
+    //void timerCallback() override;
     //[/UserMethods]
 
     void paint (juce::Graphics&) override;
     void resized() override;
-    void sliderValueChanged (Slider * sliderThatWasMoved) override;
+    void sliderValueChanged (Slider * slider) override;
     void comboBoxChanged(ComboBox * comboBox) override;
     //void buttonClicked(ToggleButton * button) override;
 
@@ -73,7 +72,7 @@ private:
 
     //==============================================================================
     Slider gainDbSlider;
-    Slider panSlider;
+    Slider panKnob;
    
     ComboBox convSelector;
     
@@ -81,7 +80,7 @@ private:
     Label panLabel;
     Label convLabel;
     
-   // ToggleButton muteONButton;
+   ToggleButton muteButton;
    // ToggleButton muteOFFButton;
 
 
