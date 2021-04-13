@@ -104,18 +104,14 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
 
 JuceGainAudioProcessorEditor::~JuceGainAudioProcessorEditor()
 {
-    //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
    // gainDbSlider = nullptr;
-   // panSlider = nullptr;
+   // panKnob = nullptr;
     //gainLabel = nullptr;
    // panLabel = nullptr;
 
-
-    //[Destructor]. You can add your own custom destruction code here..
     deleteAllChildren();
-    //[/Destructor]
 }
 
 //==============================================================================
@@ -159,7 +155,7 @@ void JuceGainAudioProcessorEditor::sliderValueChanged(Slider *slider){
 void JuceGainAudioProcessorEditor::buttonClicked(Button * button){
     
     if (button == &muteButton){
-        processor.muteOn = !audioProcessor.muteOn;
+        processor.muteOn = !processor.muteOn;
     }
     
 }

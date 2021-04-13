@@ -27,14 +27,14 @@ public:
     //==============================================================================
 
     const String getName() const;
-    int getNumParameters();
-
-    float getParameter (int index);
-    void setParameter (int index, float newValue);
-    float getParameterDefaultValue(int index);
-
-    const String getParameterName (int index);
-    const String getParameterText (int index);
+//    int getNumParameters();
+//
+//    float getParameter (int index);
+//    void setParameter (int index, float newValue);
+//    float getParameterDefaultValue(int index);
+//
+//    const String getParameterName (int index);
+//    const String getParameterText (int index);
 
     const String getInputChannelName (int channelIndex) const;
     const String getOutputChannelName (int channelIndex) const;

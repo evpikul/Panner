@@ -165,7 +165,7 @@ bool JuceGainAudioProcessor::hasEditor() const
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-AudioProcessorEditor* JuceGainAudioProcessor::createEditor()
+juce::AudioProcessorEditor* JuceGainAudioProcessor::createEditor()
 {
    return new JuceGainAudioProcessorEditor (*this);
 }

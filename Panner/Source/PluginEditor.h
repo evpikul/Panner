@@ -12,23 +12,12 @@
 #ifndef __JUCE_HEADER_2D04B386A627E93D__
 #define __JUCE_HEADER_2D04B386A627E93D__
 
-//[Headers]     -- You can add your own extra header files here --
+
 using namespace std;
 #include "JuceHeader.h"
 #include "PluginProcessor.h"
 #include "PluginLookAndFeel.h"
-//[/Headers]
 
-
-
-//==============================================================================
-/**
-                                                                    //[Comments]
-    An auto-generated component, created by the Introjucer.
-
-    Describe your class and how it works here!
-                                                                    //[/Comments]
-*/
 
 class JuceGainAudioProcessorEditor  : public AudioProcessorEditor,
                                     public juce::Slider::Listener,
@@ -50,7 +39,7 @@ public:
     void resized() override;
     void sliderValueChanged (Slider * slider) override;
     void comboBoxChanged(ComboBox * comboBox) override;
-    //void buttonClicked(ToggleButton * button) override;
+    void buttonClicked(Button * button) override;
 
 
 
@@ -80,7 +69,7 @@ private:
     Label panLabel;
     Label convLabel;
     
-   ToggleButton muteButton;
+    ToggleButton muteButton;
    // ToggleButton muteOFFButton;
 
 
