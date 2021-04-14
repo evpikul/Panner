@@ -131,12 +131,13 @@ void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
     else{
         
         juce::dsp::ProcessSpec specs;
-        specs.maximumBlockSize = config::BUFFER_LENGTH;
+        //specs.maximumBlockSize = config::BUFFER_LENGTH;
         specs.numChannels = 2;
         specs.sampleRate = 44100;
         myConvolution.prepare(specs);
-        myConvolution.loadImpulseResponse(<#const File &fileImpulseResponse#>, Stereo, Trim, 0);
-     
+        const auto impulsFile = File("Users/emilypikul/Panner/KustomShanuteKansasB5LeftA230200320.wav");
+        myConvolution.loadImpulseResponse(impulsFile, dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+
         juce::dsp::AudioBlock<float> block(buffer);
         juce::dsp::ProcessContextReplacing<float> context(block);
         myConvolution.process(context);
