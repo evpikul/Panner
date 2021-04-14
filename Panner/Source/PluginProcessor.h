@@ -13,6 +13,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Panning.h"
+//#include "juce_dsp"
 
 //==============================================================================
 /**
@@ -94,6 +95,7 @@ private:
     //float leftPanGain, rightPanGain;
     
     Panning myPanning;
+    juce::dsp::Convolution myConvolution;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JuceGainAudioProcessor)
 };

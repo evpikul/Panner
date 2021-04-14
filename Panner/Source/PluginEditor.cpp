@@ -135,8 +135,6 @@ void JuceGainAudioProcessorEditor::resized()
     //panSlider.setBounds (144, 40, 60, 90);
     //gainLabel.setBounds (40, 16, 60, 20);
     //panLabel.setBounds (144, 16, 60, 20);
-    //[UserResized] Add your own custom resize handling here..
-    //[/UserResized]
 }
 
 
