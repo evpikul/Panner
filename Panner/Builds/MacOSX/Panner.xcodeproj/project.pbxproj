@@ -344,13 +344,6 @@
 			path = "~/JUCE/modules/juce_dsp";
 			sourceTree = "<absolute>";
 		};
-		78700AC273295435B0ED7247 = {
-			isa = PBXFileReference;
-			lastKnownFileType = file.wav;
-			name = "Direct Cabinet N1.wav";
-			path = "../../../../Direct Cabinet N1.wav";
-			sourceTree = "SOURCE_ROOT";
-		};
 		7B1988AC3B714251B5235A15 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.cpp;
@@ -414,6 +407,13 @@
 			path = ../../Source/Panning.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
+		9BAA16339CFFF37AA0D642FC = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_gui_basics";
+			path = "~/JUCE/modules/juce_gui_basics";
+			sourceTree = "<absolute>";
+		};
 		A481A4314C869817F40AE862 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -448,13 +448,6 @@
 			includeInIndex = 0;
 			path = libPanner.a;
 			sourceTree = "BUILT_PRODUCTS_DIR";
-		};
-		9BAA16339CFFF37AA0D642FC = {
-			isa = PBXFileReference;
-			lastKnownFileType = file;
-			name = "juce_gui_basics";
-			path = "~/JUCE/modules/juce_gui_basics";
-			sourceTree = "<absolute>";
 		};
 		A7E9E1651FB3C854D1B5ABC9 = {
 			isa = PBXFileReference;
@@ -653,7 +646,6 @@
 				7B1988AC3B714251B5235A15,
 				4EC7839C7FA7B8B624C822FE,
 				84D0F76E435B609D786148B7,
-				78700AC273295435B0ED7247,
 			);
 			name = Source;
 			sourceTree = "<group>";

@@ -13,6 +13,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Panning.h"
+#include "Conv.h"
 //#include "juce_dsp"
 
 //==============================================================================
@@ -42,7 +43,8 @@ public:
     bool isInputChannelStereoPair (int index) const;
     bool isOutputChannelStereoPair (int index) const;
     
-    void prepareToPlay (double sampleRate, int samplesPerBlock, int convType);
+    //void prepareToPlay (double sampleRate, int samplesPerBlock, int convType);
+    void prepareToPlay (double sampleRate, int samplesPerBlock);
     void releaseResources();
 
     void processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
@@ -71,15 +73,18 @@ public:
     void setStateInformation (const void* data, int sizeInBytes);
 
     //==============================================================================
-    int convType = 1;
-    
-    Convolution::setConvType = Convolution::setConvType::Cab1;
+    //int convType = Cab1;
+    enum convType { Cab1, Cab2, Cab3, None };
+    Conv::ConvSelection convSelect = Conv::ConvSelection::Cab1;
     
     float panVal = 0.f;
     AudioParameterFloat * pan;
     //float gain = 1.f;
     AudioParameterFloat * gain;
     bool  muteOn = false;
+    
+    AudioProcessorValueTreeState state;
+    AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
 private:
     //==============================================================================

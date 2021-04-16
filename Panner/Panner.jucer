@@ -25,8 +25,6 @@
       <FILE id="GRLmQw" name="Convolution.h" compile="0" resource="0" file="Source/Convolution.h"/>
       <FILE id="pRWQPQ" name="iR_cathedral.wav" compile="0" resource="1"
             file="../../iR_cathedral.wav"/>
-      <FILE id="GjBcz2" name="Direct Cabinet N1.wav" compile="0" resource="1"
-            file="../../Direct Cabinet N1.wav"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

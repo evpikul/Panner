@@ -14,11 +14,8 @@ namespace BinaryData
     extern const char*   iR_cathedral_wav;
     const int            iR_cathedral_wavSize = 1132140;
 
-    extern const char*   Direct_Cabinet_N1_wav;
-    const int            Direct_Cabinet_N1_wavSize = 3080;
-
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 3;
+    const int namedResourceListSize = 2;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

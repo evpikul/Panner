@@ -31,9 +31,8 @@ public:
     ~JuceGainAudioProcessorEditor();
 
     //==============================================================================
-    //[UserMethods]     -- You can add your own custom methods in this section.
-    //void timerCallback() override;
-    //[/UserMethods]
+    std::vector<std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment>> sliderAttachments;
+    std::vector<std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment>> comboboxAttachments;
 
     void paint (juce::Graphics&) override;
     void resized() override;
@@ -41,7 +40,8 @@ public:
     void comboBoxChanged(ComboBox * comboBox) override;
     void buttonClicked(Button * button) override;
 
-
+    //int convType = 1;
+    enum convType { Cab1, Cab2, Cab3, None };
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.

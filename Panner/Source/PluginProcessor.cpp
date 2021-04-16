@@ -12,7 +12,30 @@
 
 
 //==============================================================================
-JuceGainAudioProcessor::JuceGainAudioProcessor(){}
+JuceGainAudioProcessor::JuceGainAudioProcessor()
+#ifndef JucePlugin_PreferredChannelConfigurations
+     : AudioProcessor (BusesProperties()
+                     #if ! JucePlugin_IsMidiEffect
+                      #if ! JucePlugin_IsSynth
+                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+                      #endif
+                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+                     #endif
+                       ), state(*this, nullptr, "context",
+                                createParameterLayout())
+#endif
+{
+}
+
+AudioProcessorValueTreeState::ParameterLayout JuceGainAudioProcessor::createParameterLayout(){
+    std::vector<std::unique_ptr<RangedAudioParameter>> params;
+    
+    params.push_back( std::make_unique<AudioParameterFloat> ("ConvParams","Conv",0.f,2.f,1.f) );
+    params.push_back( std::make_unique<AudioParameterFloat> ("panValue","Pan",0.f,2.f,1.f) );
+    params.push_back( std::make_unique<AudioParameterFloat> ("gainValue","Gain",0.f,2.f,1.f) );
+    
+    return {params.begin() , params.end() };
+}
 
 
 JuceGainAudioProcessor::~JuceGainAudioProcessor()
@@ -99,7 +122,7 @@ void JuceGainAudioProcessor::changeProgramName (int index, const String& newName
 }
 
 //==============================================================================
-void JuceGainAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock, int convType)
+void JuceGainAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     dsp::ProcessSpec spec;
     spec.sampleRate = sampleRate;
@@ -109,9 +132,29 @@ void JuceGainAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
     myConvolution.reset();
     myConvolution.prepare(spec);
     
-    
-    myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
-    //updateParameters();
+//    //convType = newConvType; 
+//    switch (convType) {
+//        case Cab1:
+//            myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+//            break;
+//
+//        case Conv::Cab2:
+//            myConvolution.loadImpulseResponse(BinaryData::iR_cathedral_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+//            break;
+//
+//        case Conv::Cab3:
+//            myConvolution.loadImpulseResponse(BinaryData::Direct_Cabinet_N1_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+//            break;
+//
+//        case Conv::None:
+//            myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+//            break;
+//
+//        default:
+//            myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+//    }
+//
+//    convType = *state.getRawParameterValue("convType");
 }
 
 void JuceGainAudioProcessor::releaseResources()
@@ -139,9 +182,6 @@ void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
     }
     else{
         
-        myConvolution.setConvType(convSelect);
-
-
         dsp::AudioBlock<float> block (buffer);
         dsp::ProcessContextReplacing<float> context (block);
         myConvolution.process(context);
@@ -181,12 +221,19 @@ void JuceGainAudioProcessor::getStateInformation (MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    auto currentState = state.copyState();
+    std::unique_ptr<XmlElement> xml (currentState.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void JuceGainAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<XmlElement> xml ( getXmlFromBinary(data, sizeInBytes));
+    if (xml && xml->hasTagName(state.state.getType())){
+        state.replaceState(ValueTree::fromXml(*xml));
+    }
 }
 
 //==============================================================================
