@@ -42,7 +42,7 @@ public:
     bool isInputChannelStereoPair (int index) const;
     bool isOutputChannelStereoPair (int index) const;
     
-    void prepareToPlay (double sampleRate, int samplesPerBlock);
+    void prepareToPlay (double sampleRate, int samplesPerBlock, int convType);
     void releaseResources();
 
     void processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
@@ -72,6 +72,8 @@ public:
 
     //==============================================================================
     int convType = 1;
+    
+    Convolution::setConvType = Convolution::setConvType::Cab1;
     
     float panVal = 0.f;
     AudioParameterFloat * pan;

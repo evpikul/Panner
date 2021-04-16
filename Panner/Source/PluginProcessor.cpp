@@ -99,10 +99,19 @@ void JuceGainAudioProcessor::changeProgramName (int index, const String& newName
 }
 
 //==============================================================================
-void JuceGainAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void JuceGainAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock, int convType)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = getTotalNumOutputChannels();
+    
+    myConvolution.reset();
+    myConvolution.prepare(spec);
+    
+    
+    myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+    //updateParameters();
 }
 
 void JuceGainAudioProcessor::releaseResources()
@@ -130,16 +139,11 @@ void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
     }
     else{
         
-        juce::dsp::ProcessSpec specs;
-        //specs.maximumBlockSize = config::BUFFER_LENGTH;
-        specs.numChannels = 2;
-        specs.sampleRate = 44100;
-        myConvolution.prepare(specs);
-        const auto impulsFile = File("Users/emilypikul/Panner/KustomShanuteKansasB5LeftA230200320.wav");
-        myConvolution.loadImpulseResponse(impulsFile, dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+        myConvolution.setConvType(convSelect);
 
-        juce::dsp::AudioBlock<float> block(buffer);
-        juce::dsp::ProcessContextReplacing<float> context(block);
+
+        dsp::AudioBlock<float> block (buffer);
+        dsp::ProcessContextReplacing<float> context (block);
         myConvolution.process(context);
         
         myPanning.setPanVal(panVal);
@@ -150,20 +154,8 @@ void JuceGainAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
                 float x = buffer.getReadPointer(channel)[n];
                 float y = myPanning.processSample(x,channel);
                 
+                buffer.getWritePointer(channel)[n] = y;
                 
-                //x = x * gain;
-                // Distortion
-                //x = hardClip(x);
-//                x = myDistortion.processSample(x);
-//
-//                x = myPanning.processSample(x,channel);
-                
-                
-                // Equalizer
-                // Reverb
-                
-                // Output Gain
-                buffer.getWritePointer(channel)[n] = y; // -12 dB
             }
         }
     }

@@ -14,7 +14,7 @@
 
 //==============================================================================
 JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p)
 {
     setSize (700, 400);
     
@@ -42,7 +42,7 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     panKnob.addListener (this);
     panKnob.setTooltip (TRANS("Adjusts signal panning"));
     panKnob.setBounds(500,100,200,200);
-    panKnob.setRange (-50, 50, 1);
+    panKnob.setRange (-50, -50, 0);
     panKnob.setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
     panKnob.setTextBoxStyle (Slider::TextBoxBelow, false, 60, 20);
     panKnob.setColour (Slider::rotarySliderFillColourId, Colours::greenyellow);
@@ -61,11 +61,11 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     convSelector.setTooltip (TRANS("Convolution"));
     convSelector.setBounds(500,5,25,25);
     //convSelector->setTextBoxStyle (ComboBox::TextBoxBelow, false, 60, 20);
-    convSelector.addItem("Cathedral",1);
-    convSelector.addItem("Bathroom",2);
-    convSelector.addItem("Anechoic Chamber", 3);
-    convSelector.addItem("Plate", 4);
-    convSelector.addItem("None", 5);
+    convSelector.addItem("Cabinet 1",1);
+    convSelector.addItem("Cabinet 2",2);
+    convSelector.addItem("Cathedral", 3);
+   // convSelector.addItem("Plate", 4);
+    convSelector.addItem("None", 4);
     convSelector.setSelectedId(1);
     convSelector.setBounds(275, 100, 120, 40);
     addAndMakeVisible(convSelector);
@@ -75,17 +75,10 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
     
     muteButton.addListener(this);
     muteButton.setBounds(275, 175, 100, 40);
-    muteButton.setButtonText("Sync'd");
-    //muteONButton.setToggleState(audioProcessor.muteON, dontSendNotification);
-    muteButton.setRadioGroupId(1); // links with "notTempoSyncButton"
+    muteButton.setButtonText("Mute");
+    muteButton.setToggleState(audioProcessor.muteOn, dontSendNotification);
     addAndMakeVisible(muteButton);
-//
-//    muteOFFButton.addListener(this);
-//    muteOFFButton.setBounds(100, 175, 100, 40);
-//    muteOFFButton.setButtonText("Sync Off");
-//   // muteOFFButton.setToggleState(!audioProcessor.muteOFF, dontSendNotification);
-//    muteOFFButton.setRadioGroupId(1);
-//    addAndMakeVisible(muteOFFButton);
+
 
 
     //[UserPreSize]
@@ -99,7 +92,7 @@ JuceGainAudioProcessorEditor::JuceGainAudioProcessorEditor (JuceGainAudioProcess
 
     //[Constructor] You can add your own custom stuff here..
     //startTimer(50);
-    //[/Constructor]
+
 }
 
 JuceGainAudioProcessorEditor::~JuceGainAudioProcessorEditor()
@@ -132,7 +125,7 @@ void JuceGainAudioProcessorEditor::resized()
     //[/UserPreResize]
 
     gainDbSlider.setBounds (40, 40, 60, 260);
-    //panSlider.setBounds (144, 40, 60, 90);
+    panKnob.setBounds (144, 40, 60, 90);
     //gainLabel.setBounds (40, 16, 60, 20);
     //panLabel.setBounds (144, 16, 60, 20);
 }
@@ -142,10 +135,10 @@ void JuceGainAudioProcessorEditor::resized()
 void JuceGainAudioProcessorEditor::sliderValueChanged(Slider *slider){
     
     if (slider == &gainDbSlider){
-        *processor.gain = gainDbSlider.getValue(); //assign to value of the pointer
+        *audioProcessor.gain = (gainDbSlider.getValue()+ 96.f) / 106.f; //assign to value of the pointer
     }
     if (slider == &panKnob){
-        *processor.pan = panKnob.getValue(); //assign to value of the pointer
+        *audioProcessor.pan = (panKnob.getValue()+ 50.f) / 100.f;; //assign to value of the pointer
     }
     
 }
@@ -153,7 +146,7 @@ void JuceGainAudioProcessorEditor::sliderValueChanged(Slider *slider){
 void JuceGainAudioProcessorEditor::buttonClicked(Button * button){
     
     if (button == &muteButton){
-        processor.muteOn = !processor.muteOn;
+        audioProcessor.muteOn = !audioProcessor.muteOn;
     }
     
 }
@@ -163,19 +156,19 @@ void JuceGainAudioProcessorEditor::comboBoxChanged(ComboBox* comboBox){
     if (comboBox == &convSelector){
         if (convSelector.getSelectedId() == 1){
             // Convolution IR 1
-            processor.convType = 2.f; //insert strings as values instead? 
+            audioProcessor.convType = Convolution::setConvType::Cab1;; //insert strings as values instead?
         }
         if (convSelector.getSelectedId() == 2){
             // Convolution IR 2
-            processor.convType = 1.f;
+            audioProcessor.convType = Convolution::setConvType::Cab2;
         }
         if (convSelector.getSelectedId() == 3){
             // Convolution IR 3
-            processor.convType = 0.5f;
+            audioProcessor.convType = Convolution::setConvType::Cab3;
         }
         if (convSelector.getSelectedId() == 4){
             // Convolution IR 4
-            processor.convType = 0.25f;
+            audioProcessor.convType = Convolution::setConvType::None;
         }
     }
 }

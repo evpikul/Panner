@@ -93,6 +93,10 @@
 			isa = PBXBuildFile;
 			fileRef = 7B1988AC3B714251B5235A15;
 		};
+		4859C05B93D0C933554E3D27 = {
+			isa = PBXBuildFile;
+			fileRef = FF437C57ACA072629B698FDC;
+		};
 		487254BE53E40F6C69040723 = {
 			isa = PBXBuildFile;
 			fileRef = D7604672881AD9DD2F44ACBA;
@@ -256,6 +260,13 @@
 			path = "~/JUCE/modules/juce_graphics";
 			sourceTree = "<absolute>";
 		};
+		2CC8DD437CA0C7D592231251 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = BinaryData.h;
+			path = ../../JuceLibraryCode/BinaryData.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		2EB4AB39BA100BA203A4D089 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -333,6 +344,13 @@
 			path = "~/JUCE/modules/juce_dsp";
 			sourceTree = "<absolute>";
 		};
+		78700AC273295435B0ED7247 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file.wav;
+			name = "Direct Cabinet N1.wav";
+			path = "../../../../Direct Cabinet N1.wav";
+			sourceTree = "SOURCE_ROOT";
+		};
 		7B1988AC3B714251B5235A15 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.cpp;
@@ -353,6 +371,13 @@
 			name = WebKit.framework;
 			path = System/Library/Frameworks/WebKit.framework;
 			sourceTree = SDKROOT;
+		};
+		84D0F76E435B609D786148B7 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file.wav;
+			name = "iR_cathedral.wav";
+			path = "../../../../iR_cathedral.wav";
+			sourceTree = "SOURCE_ROOT";
 		};
 		85AB854B7C9B4306C2087E2E = {
 			isa = PBXFileReference;
@@ -389,13 +414,6 @@
 			path = ../../Source/Panning.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
-		9BAA16339CFFF37AA0D642FC = {
-			isa = PBXFileReference;
-			lastKnownFileType = file;
-			name = "juce_gui_basics";
-			path = "~/JUCE/modules/juce_gui_basics";
-			sourceTree = "<absolute>";
-		};
 		A481A4314C869817F40AE862 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -431,6 +449,13 @@
 			path = libPanner.a;
 			sourceTree = "BUILT_PRODUCTS_DIR";
 		};
+		9BAA16339CFFF37AA0D642FC = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_gui_basics";
+			path = "~/JUCE/modules/juce_gui_basics";
+			sourceTree = "<absolute>";
+		};
 		A7E9E1651FB3C854D1B5ABC9 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -465,6 +490,13 @@
 			name = CoreMIDI.framework;
 			path = System/Library/Frameworks/CoreMIDI.framework;
 			sourceTree = SDKROOT;
+		};
+		B9EEEE98E638A022A39B930A = {
+			isa = PBXFileReference;
+			lastKnownFileType = file.wav;
+			name = KustomShanuteKansasB5LeftA230200320.wav;
+			path = ../../../../KustomShanuteKansasB5LeftA230200320.wav;
+			sourceTree = "SOURCE_ROOT";
 		};
 		BC76F7C247FC0C61445EA2C6 = {
 			isa = PBXFileReference;
@@ -599,9 +631,17 @@
 			path = System/Library/Frameworks/CoreAudio.framework;
 			sourceTree = SDKROOT;
 		};
+		FF437C57ACA072629B698FDC = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = BinaryData.cpp;
+			path = ../../JuceLibraryCode/BinaryData.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
 		E6CC3DF63FBA9625F1026A8B = {
 			isa = PBXGroup;
 			children = (
+				B9EEEE98E638A022A39B930A,
 				D2198F6F7F8D82B0234349C1,
 				B624F01F25515291855317F5,
 				BC76F7C247FC0C61445EA2C6,
@@ -612,6 +652,8 @@
 				8ACBBE6642C5C9DDA3C47C5A,
 				7B1988AC3B714251B5235A15,
 				4EC7839C7FA7B8B624C822FE,
+				84D0F76E435B609D786148B7,
+				78700AC273295435B0ED7247,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -647,6 +689,8 @@
 		CBA68F5DA009CE49AB90F1A0 = {
 			isa = PBXGroup;
 			children = (
+				FF437C57ACA072629B698FDC,
+				2CC8DD437CA0C7D592231251,
 				D7604672881AD9DD2F44ACBA,
 				1C8B12442C739008C4FDBDF4,
 				AD566DCB5382CD2D9FF82BF1,
@@ -1722,6 +1766,7 @@
 				A756AF1C4BF68D1CAE5F3B17,
 				A59EFE0F830460FD2F360B83,
 				ECE7C04CDD3C2E8A086F5372,
+				4859C05B93D0C933554E3D27,
 				487254BE53E40F6C69040723,
 				7250332D4ABB0E814B09915C,
 				6D27423A61538254A3BAB2E1,

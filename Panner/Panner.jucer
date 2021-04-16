@@ -2,9 +2,12 @@
 
 <JUCERPROJECT id="tFMb6P" name="Panner" projectType="audioplug" useAppConfig="0"
               displaySplashScreen="1" jucerFormatVersion="1" addUsingNamespaceToJuceHeader="1"
-              pluginFormats="buildAU,buildStandalone" pluginAUMainType="'aufx'">
+              pluginFormats="buildAU,buildStandalone" pluginAUMainType="'aufx'"
+              maxBinaryFileSize="20971520">
   <MAINGROUP id="NUq2ZM" name="Panner">
     <GROUP id="{82D278E5-9C00-CDAC-D65B-CD3109D9AC0D}" name="Source">
+      <FILE id="SqXsZZ" name="KustomShanuteKansasB5LeftA230200320.wav" compile="0"
+            resource="1" file="../../KustomShanuteKansasB5LeftA230200320.wav"/>
       <FILE id="UuN9rj" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="PxLoF8" name="PluginProcessor.h" compile="0" resource="0"
@@ -20,6 +23,10 @@
       <FILE id="fCSfVb" name="Panning.h" compile="0" resource="0" file="Source/Panning.h"/>
       <FILE id="McxmD3" name="Convolution.cpp" compile="1" resource="0" file="Source/Convolution.cpp"/>
       <FILE id="GRLmQw" name="Convolution.h" compile="0" resource="0" file="Source/Convolution.h"/>
+      <FILE id="pRWQPQ" name="iR_cathedral.wav" compile="0" resource="1"
+            file="../../iR_cathedral.wav"/>
+      <FILE id="GjBcz2" name="Direct Cabinet N1.wav" compile="0" resource="1"
+            file="../../Direct Cabinet N1.wav"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

@@ -48,11 +48,11 @@ private:
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    JuceGainAudioProcessor& processor;
+    JuceGainAudioProcessor& audioProcessor;
 
     JuceGainAudioProcessor& getProcessor() const
     {
-        return static_cast<JuceGainAudioProcessor&> (processor);
+        return static_cast<JuceGainAudioProcessor&> (audioProcessor);
     }
 
     //PluginLookAndFeel pluginLookAndFeel;
