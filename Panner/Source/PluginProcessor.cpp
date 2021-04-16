@@ -132,29 +132,29 @@ void JuceGainAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
     myConvolution.reset();
     myConvolution.prepare(spec);
     
-//    //convType = newConvType; 
-//    switch (convType) {
-//        case Cab1:
-//            myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
-//            break;
-//
-//        case Conv::Cab2:
-//            myConvolution.loadImpulseResponse(BinaryData::iR_cathedral_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
-//            break;
-//
-//        case Conv::Cab3:
-//            myConvolution.loadImpulseResponse(BinaryData::Direct_Cabinet_N1_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
-//            break;
-//
-//        case Conv::None:
-//            myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
-//            break;
-//
-//        default:
-//            myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
-//    }
-//
-//    convType = *state.getRawParameterValue("convType");
+    //convType = newConvType;
+    switch (convType) {
+        case Cab1:
+            myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+            break;
+
+        case Conv::Cab2:
+            myConvolution.loadImpulseResponse(BinaryData::iR_cathedral_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+            break;
+
+        case Conv::Cab3:
+            myConvolution.loadImpulseResponse(BinaryData::Direct_Cabinet_N1_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+            break;
+
+        case Conv::None:
+            myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+            break;
+
+        default:
+            myConvolution.loadImpulseResponse(BinaryData::KustomShanuteKansasB5LeftA230200320_wav, BinaryData::KustomShanuteKansasB5LeftA230200320_wavSize,  dsp::Convolution::Stereo::yes, dsp::Convolution::Trim::yes, 0, dsp::Convolution::Normalise::yes);
+    }
+
+    convType = *state.getRawParameterValue("convType");
 }
 
 void JuceGainAudioProcessor::releaseResources()

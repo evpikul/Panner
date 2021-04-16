@@ -21,8 +21,8 @@
             file="../../../JUCETestPlugins/Panner/MyPanner/Source/PluginLookAndFeel.h"/>
       <FILE id="ILYMDf" name="Panning.cpp" compile="1" resource="0" file="Source/Panning.cpp"/>
       <FILE id="fCSfVb" name="Panning.h" compile="0" resource="0" file="Source/Panning.h"/>
-      <FILE id="McxmD3" name="Convolution.cpp" compile="1" resource="0" file="Source/Convolution.cpp"/>
-      <FILE id="GRLmQw" name="Convolution.h" compile="0" resource="0" file="Source/Convolution.h"/>
+      <FILE id="qbf5oi" name="Conv.cpp" compile="1" resource="0" file="Source/Conv.cpp"/>
+      <FILE id="gWNTD2" name="Conv.h" compile="0" resource="0" file="Source/Conv.h"/>
       <FILE id="pRWQPQ" name="iR_cathedral.wav" compile="0" resource="1"
             file="../../iR_cathedral.wav"/>
     </GROUP>
